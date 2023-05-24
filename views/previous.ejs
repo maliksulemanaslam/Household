@@ -1,0 +1,57 @@
+<%- include('header'); -%>
+
+<body>
+  <% bookedService.forEach(function(bookedService){%>
+    <div class="card-container container">  
+    <table class="table login-card">
+      <thead>
+        <tr>
+          <th scope="col">Order</th>
+          <th scope="col">Details</th>
+          <!-- <th scope="col">Action</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td>Name</td>
+          <td>
+            <%=bookedService.service%>
+          </td>
+          <!-- <td>
+            <button type="button" class="btn btn-primary"><i class="far fa-eye"></i></button>
+            <button type="button" class="btn btn-success"><i class="fas fa-edit"></i></button>
+          <button type="button" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+          </td> -->
+        </tr>
+        <tr>
+          <td>Date</td>
+          <td>
+            <%= bookedService.date %>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Time</td>
+          <td>
+            <%= bookedService.time %>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Price</td>
+          <td><%= bookedService.price%>     
+            <td></td>
+        </tr>
+   
+       
+      </tbody>
+     
+    </table>
+  </div>
+</div>
+  <%}) %>
+
+</body>
+
+<%- include('footer'); -%>

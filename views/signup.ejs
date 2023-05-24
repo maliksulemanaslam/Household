@@ -1,0 +1,92 @@
+<%- include('header'); -%>
+
+<body>
+  <main id="signup-main">
+    <div class="container signup-container">
+      <h4 class="login-h4">User Signup</h4>
+      <form autocomplete="off" class="row g-3 needs-validation" action="/signup" method="post" novalidate>
+        <div><p class="login-warning"><%= message %></p></div>
+        <div class="col-md-3">
+          <label for="validationCustom01" class="form-label">First name</label>
+          <input type="text" class="form-control" id="validationCustom01" name="firstname" required>
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label for="validationCustom02" class="form-label">Last name</label>
+          <input type="text" class="form-control" id="validationCustom02" required name="lastname">
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label for="validationCustomUsername" class="form-label">Username</label>
+          <div class="input-group has-validation">
+            <!-- <span class="input-group-text" id="inputGroupPrepend">@</span> -->
+            <input type="text" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required name="username">
+            <div class="invalid-feedback">
+              Please choose a username.
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label for="validationCustom02" class="form-label">Password</label>
+          <input type="password" class="form-control" id="validationCustom02" required name=password>
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label for="validationCustom02" class="form-label">Email</label>
+          <input type="email" class="form-control" id="validationCustom02" required name="email">
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="validationCustom03" class="form-label">Address</label>
+          <input type="text" class="form-control" id="validationCustom03" required name="address">
+          <div class="invalid-feedback">
+            Please provide a valid address.
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label for="validationCustom05" class="form-label">City</label>
+          <input type="text" class="form-control" id="validationCustom05" required name="city">
+          <div class="invalid-feedback">
+            Please provide a valid city name.
+          </div>
+        </div>
+        <div class="col-12">
+          <button class="btn btn-outline-dark" type="submit">Signup</button>
+        </div>
+        <div class="card-footer text-muted">
+          <a href="/login">already have an account? Sign in here</a>
+        </div>
+      </form>
+
+    </div>
+  </main>
+</body>
+<script>
+  (() => {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  const forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+
+      form.classList.add('was-validated')
+    }, false)
+  })
+})()
+</script>
+<%- include('footer'); -%>

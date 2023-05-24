@@ -1,0 +1,145 @@
+<%- include('header'); -%>
+
+  <body>
+
+    <div class="prof-body">
+      <div class="container prof-container">
+        <div class="row pt-3">
+          <div class="col-md-12">
+            <h1 class="profile-h1"> <i class="fa-solid fa-user"></i> Profile</h1>
+          </div>
+          <div class="col-md-2">
+
+          </div>
+          <div class="col-md-8">
+            <div class="card">
+              <div class="card-header">
+                <h1>Welcome </h1>
+              </div>
+              <ul class="list-group list-group-flush">
+                <input type="text" class="form-control inp" placeholder="Full name"
+                  value="<%=info.user.firstname%> <%=info.user.lastname%>" disabled>
+                <li class="list-group-item">
+                  <h5>Email</h5>
+                </li>
+                <input type="text" class="form-control inp" placeholder="Recipient's username"
+                  value="<%=info.user.email%>" disabled>
+                <li class="list-group-item">
+                  <h5>Username</h5>
+                </li>
+                <input type="text" class="form-control inp" placeholder="Recipient's username"
+                  value="<%=info.user.username%>" disabled>
+                <li class="list-group-item">
+                  <h5>Address</h5>
+                </li>
+                <input type="text" class="form-control inp" placeholder="Recipient's username"
+                  value="<%=info.user.address%>" disabled>
+                <li class="list-group-item">
+                  <h5>City</h5>
+                </li>
+                <input type="text" class="form-control inp" placeholder="Recipient's username"
+                  value="<%=info.user.city%>" disabled>
+              </ul>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <a href="home" class="btn btn-primary prof-link btn-profile">Place an Order</a>
+                <!-- <a href="/getOrderToUpdate" class="btn btn-danger prof-link btn-profile">Cancel my order</a> -->
+                <a href="/getPreviouslyBookedService" class="btn btn-primary prof-link btn-profile">View previous orders</a>
+                <!-- <a href="/getOrder" class="btn btn-primary prof-link btn-profile">Order management</a> -->
+                <a href="/allOrders" class="btn btn-primary prof-link btn-profile">My current bookings</a>
+              </div>
+            </div>
+            <%= message %>
+              <%entries=bookedService.map(function(elem) { return '<span style="cursor: pointer;">'
+                +' ' + elem.service + ' ' + elem.price + ' ' + elem.date + ' ' + elem.time + ' </span><br />';
+                }) -%>
+                <div>
+                  <p id="entries">
+                    <%- entries %>
+                  </p>
+                </div>
+
+                <% update=updateService.map(function(elem) {
+                  return '<span style="cursor: pointer;" onclick="updateOrder()" id="' + elem.service +'">' +
+                  elem.service + ' ' + elem.price + ' ' + elem.date + ' ' + elem.time + ' '+ elem.status
+                  +'</span><br />';
+                  }) -%>
+                  <div>
+                    <p id="update">
+                      <%- update %>
+                    </p>
+                  </div>
+                  <% order=order.map(function(elem) { return '<button class="btn btn-primary far fa-eye" id="' + elem.service +'" onclick="Order()" style="cursor: pointer;"></button><button onclick="updateOrder()" id="' + elem.service +'"  class="btn btn-danger far fa-trash-alt"></button><span>' + elem.service +'<span><p class="para" style="display:none;">' +
+                    elem.service + ' ' + elem.price + ' ' + elem.date + ' ' + elem.time + ' '+ elem.status
+                    +'</p><br/>';
+                    }) -%>
+                    <div>
+                      <p id="order">
+                        <%- order %>
+                      </p>
+                    </div>
+
+                    <div class="buttons">
+                      <a class="btn btn-outline-dark btn-profile" href="/">Home</a>
+                      <a class="btn btn-outline-danger btn-profile" href="/logout"><i class="fa-solid fa-right-from-bracket"> </i>
+                        Logout</a>
+                      <a class="btn btn-outline-dark btn-profile" href="/editProfile"><i class="fa-solid fa-user-pen"></i> Edit
+                        profile</a>
+                    </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <script>
+    
+      function updateOrder() {
+        console.log(event.target.id);
+        const array = []
+         document.querySelectorAll(".para").forEach((para)=>{
+           array.push(para.innerHTML)
+        })
+        //array = array.getElementsByTagName('span').innerText
+        //let array = '<%= bookedService.join(", "); %>'
+      
+        const updateOrder = array.reduce((acc, num) => { return num.split(' ')[0] === event.target.id ? acc.concat(num) : acc }, []);
+        const remainingOrder = array.reduce((acc, num) => { return num.split(' ')[0] !== event.target.id ? acc.concat(num) : acc }, []);
+
+        fetch(`/updateOrder?updateOrder=${updateOrder}&remainingOrder=${remainingOrder}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          },
+          redirect: 'follow',
+        }).then(result => {
+          console.log(result);
+          if (result.ok) {
+            window.location.href = '/userprofile-2'
+          }
+        }).catch(err => console.log(err))
+        href="/cancelOrder?id=' + elem.id + '&time=' + elem.time + '&service=' + elem.service + '&date=' + elem.date + '&price=' +elem.price + '"
+      }
+
+
+      function Order() {
+       let order = event.target.id
+       //order = order.getAttribute('id')
+        console.log(order)
+        fetch(`/order?order=${order}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          }, redirect: "follow"
+        }).then(result => {
+          console.log(result);
+          if (result.ok) {
+            window.location.href = `/order?order=${order}`
+          }
+        }).catch(err => console.log(err))
+      }
+    </script>
+
+  </body>
+  <%- include('footer'); -%>

@@ -1,0 +1,100 @@
+<%- include('header'); -%>
+
+<body>
+  <% order.forEach(function(order){%>
+    <div class="card-container container">  
+      <p class="para" style="display:none;"><%=order.service%> <%=order.price%> <%=order.date%> <%=order.time%> <%=order.status%></p>
+    <table class="table login-card">
+      <thead>
+        <tr>
+          <th scope="col">Order</th>
+          <th scope="col">Details</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td>Name</td>
+          <td>
+            <%=order.service%>
+          </td>
+          <td>
+            <button type="button" onclick="Order()" id="<%=order.service%>" class="btn btn-primary far fa-eye"></button>
+            <!-- <button type="button" class="btn btn-success"><i class="fas fa-edit"></i></button> -->
+          <button type="button" onclick="updateOrder()" id="<%=order.service%>" class="btn btn-danger far fa-trash-alt"></button>
+          </td>
+        </tr>
+        <tr>
+          <td>Date</td>
+          <td>
+            <%= order.date %>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Time</td>
+          <td>
+            <%= order.time %>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Price</td>
+          <td><%= order.price%>     
+            <td></td> 
+        </tr>
+       
+      </tbody>
+     
+    </table>
+  </div>
+</div>
+  <%}) %>
+  <script>
+    
+    function updateOrder() {
+      console.log(event.target.id);
+      const array = []
+       document.querySelectorAll(".para").forEach((para)=>{
+         array.push(para.innerHTML)
+      })
+      //array = array.getElementsByTagName('span').innerText
+      //let array = '<%= bookedService.join(", "); %>'
+    console.log(array)
+      const updateOrder = array.reduce((acc, num) => { return num.split(' ')[0] === event.target.id ? acc.concat(num) : acc }, []);
+      const remainingOrder = array.reduce((acc, num) => { return num.split(' ')[0] !== event.target.id ? acc.concat(num) : acc }, []);
+
+      fetch(`/updateOrder?updateOrder=${updateOrder}&remainingOrder=${remainingOrder}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        redirect: 'follow',
+      }).then(result => {
+        console.log(result);
+        if (result.ok) {
+          window.location.href = '/userprofile-2'
+        }
+      }).catch(err => console.log(err))
+      href="/cancelOrder?id=' + elem.id + '&time=' + elem.time + '&service=' + elem.service + '&date=' + elem.date + '&price=' +elem.price + '"
+    }
+
+
+    function Order() {
+      let order = event.target.id;
+      fetch(`/order?order=${order}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        }, redirect: "follow"
+      }).then(result => {
+        console.log(result);
+        if (result.ok) {
+          window.location.href = `/order?order=${order}`
+        }
+      }).catch(err => console.log(err))
+    }
+  </script>
+</body>
+<%- include('footer'); -%>

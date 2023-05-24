@@ -1,0 +1,99 @@
+<%- include('header'); -%>
+
+  <body onload="receipt()">
+    <p>
+      <%= message%>
+    </p>
+    <div class="card-container container">
+      <table class="table login-card">
+        <thead>
+          <tr>
+            <th scope="col">First</th>
+            <th scope="col">Last</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Order date/time</td>
+            <td>
+              <%=date%>
+                <%=time%>
+            </td>
+          </tr>
+          <tr>
+            <td>Order name</td>
+            <td>
+              <%=service%>
+            </td>
+          </tr>
+          <tr>
+            <td>Order price</td>
+            <td>
+              <%=price%>
+            </td>
+          </tr>
+          <tr>
+            <td>Total price</td>
+            <td>
+              <%=price%>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card-container card container row payment-cont login-card">
+
+        <form method="post" action="/receipt">
+          <!-- <input type="email" id="email" name="email" value="<%=info.user.email%>" placeholder="<%=info.user.email%>"
+            style="display: none" />
+          <input type="number" id="amount" name="amount" value="<%=price%>" placeholder="<%=price%>"
+            style="display: none" />
+          <input type="text" id="service" name="service" value="<%=service%>" placeholder="<%=service%>"
+            style="display: none" />
+          <input type="text" id="time" name="time" value="<%=time%>" placeholder="<%=time%>" style="display: none" />
+          <input type="text" id="date" name="date" value="<%=date%>" placeholder="<%=date%>" style="display: none" />
+          <label for="email">Email:</label> -->
+          <input class="payment-input" type="email" placeholder="<%=info.user.email%>" disabled />
+          <label for="amount">Rs</label>
+          <input class="payment-input" type="number" placeholder="<%=price%>" disabled />
+          <div id="payment-card"></div>
+          <div id="payment-errors"></div>
+          <button class="btn btn-primary btn-profile">Submit</button>
+        </form>
+
+    </div>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+      function receipt() {
+        const price = "<%=price%>";
+        const email = "<%=info.user.email%>";
+        console.log(price + " " + email)
+        document.getElementById('amount').value = price;
+        document.getElementById('email').value = email;
+
+      }
+
+      const stripe = Stripe("<%= key %>");
+      const elements = stripe.elements();
+      const card = elements.create("card", { hidePostalCode: true });
+      card.mount("#payment-card");
+      const form = document.querySelector("form");
+      const errors = document.querySelector("#payment-errors");
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        stripe.createToken(card).then((res) => {
+          if (res.error) {
+            errors.textContent = res.error.message;
+          } else {
+            const stripeToken = document.createElement("input");
+            stripeToken.setAttribute("type", "hidden");
+            stripeToken.setAttribute("name", "stripeToken");
+            stripeToken.setAttribute("value", res.token.id);
+            form.appendChild(stripeToken);
+            form.submit();
+          }
+        });
+      });
+    </script>
+  </body>
+  <%- include('footer'); -%>

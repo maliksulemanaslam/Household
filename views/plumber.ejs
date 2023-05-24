@@ -1,0 +1,148 @@
+<%- include('header'); -%>
+
+<div class="container air-cond-middle-section-container-1">
+  <p><%= message %></p>
+  <div class="middle-container-info">
+    <h2>Plumber Services</h2>
+  </div>
+  <div class="row middle-section-row">
+    <div class="col-lg-3 col-md-4 col-sm-6">
+      <div class="middle-section-card text-center">
+        <div class="card-body">
+          <p class="card-title">Mixer tap Installation</p>
+          <p class="card-text">Rs.500</p>
+          <p class="card-text">Fixed Charges</p>
+          <!-- Button trigger modal -->
+          <!-- <a href="/datetime" type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            
+          </a> -->
+          <a type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="myFunction('mixer-tap-installation', '500')">
+            Order now
+          </a>
+          <!-- <a href="/datetime" class="btn btn-outline-dark">Order now</a> -->
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-4 col-sm-6">
+      <div class="middle-section-card text-center">
+        <div class="card-body">
+          <p class="card-title">Single tap installation</p>
+          <p class="card-text">Rs.300</p>
+          <p class="card-text">Starting from</p>
+          
+          <a type="button" href="#" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="myFunction('Single-tap-installation', '300')">Order now</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-4 col-sm-6">
+      <div class="middle-section-card text-center">
+        <div class="card-body">
+          <p class="card-title">Sink spindle change</p>
+          <p class="card-text">Rs.300</p>
+          <p class="card-text">Starting from</p>
+          <a href="#" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal"onclick="myFunction('Sink-spindle-change', '300')">Order now</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-4 col-sm-6">
+      <div class="middle-section-card text-center">
+        <div class="card-body">
+          <p class="card-title">Muslim shower replacement</p>
+          <p class="card-text">Rs.300</p>
+          <p class="card-text">Fixed charges</p>
+          <a href="#" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal"onclick="myFunction('Muslim-shower-replacement', '300')">Order now</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-4 col-sm-6">
+      <div class="middle-section-card text-center">
+        <div class="card-body">
+          <p class="card-title">Kitchen Leakage Repairing</p>
+          <p class="card-text">Rs.1,000</p>
+          <p class="card-text">Vary After Inspection</p>
+          <a href="#" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal"onclick="myFunction('Kitchen-Leakage-Repairing', '1000')">Order now</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-4 col-sm-6">
+      <div class="middle-section-card text-center">
+        <div class="card-body">
+          <p class="card-title">Water Motor Installation</p>
+          <p class="card-text">Rs.1000</p>
+          <p class="card-text">Vary After Inspection</p>
+          <a href="#" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal"onclick="myFunction('Water-Motor-Installation', '1000')">Order now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="https://api.whatsapp.com/send?phone=+923058601815&text=Hi+Mr.+Expert%21&lang=en" class="float" target="_blank">
+    <i class="fa fa-whatsapp my-float"></i>
+  </a>
+</div>
+<%- include('footer'); -%>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Please specify</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      
+        <form method="post" action="/plumber">
+      <div>
+          <label id="date" for="myDate">Choose your preferred service date:</label>
+          <input id="myDate" type="date" name="date" required>
+          <span class="validity"></span>
+          <label id="time" for="myTime">Choose your preferred time:</label>
+          <input id="myTime" type="time" name="time" required>
+          <span class="validity"></span>
+          <input type="text" id="service"  name="service" style="display: none;" required/>
+          <input type="text" id="price" name="price" style="display:none;" required/>
+      </div>
+      <!-- <div>
+          <input  type="submit" value="Book Service!">
+      </div> -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+        <button style="text-decoration: none;" type="submit" class="btn btn-outline-dark">Place Order</button>
+      </div>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<script type="text/javascript">
+// function acDismounting(){
+// fetch('/acDismounting');
+// }
+// function acGeneral(){
+//   fetch('/acGeneral');
+// }
+  var booked;
+
+  function myFunction(service, price) {
+    // booked = service;
+    // cost = price
+    // console.log("booked: " + booked);
+    // console.log("price of service: " + cost)
+    document.getElementById('price').value = price;
+    document.getElementById('service').value = service;
+    cost = price;
+    booked= service
+
+  }
+  
+  function getVal(book) {
+    return booked;
+  }
+
+</script>
+
+
+
+
+

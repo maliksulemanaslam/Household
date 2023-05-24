@@ -1,0 +1,160 @@
+<%- include('header'); -%>
+
+  <body>
+    <div class="container">
+      <div class="card-container">
+        <table class="table login-card">
+          <thead>
+            <tr>
+              <th scope="col">Order</th>
+              <th scope="col">Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Order date/time</td>
+              <td>
+                <%= date %>
+                  <%=time%>
+              </td>
+            </tr>
+            <tr>
+              <td>Order name</td>
+              <td>
+                <%=service%>
+              </td>
+            </tr>
+            <tr>
+              <% if(status === 5){ %>
+              <td>Order status</td>
+              <td>Completed</td>
+              <% } else{%>
+                <td>Order status</td>
+                <td>Received</td>
+              <%}%>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-container">
+        <ol class="list-group list-group-numbered login-card">
+          <h3 class="fw-bold">Order status</h3>
+          <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold">Order placed</div>
+              Request on <%= date%>
+                <%=time%>
+            </div>
+
+            <% if(status>= 1){ %>
+              <span class="badge bg-primary rounded-pill">✓</span>
+              <% } else{ %>
+                <span class="badge bg-dark rounded-pill">✓</span>
+                <% } %>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold">Admin confirmation</div>
+            </div>
+
+            <% if(status>=2 ){ %>
+              <span class="badge bg-primary rounded-pill">✓</span>
+              <% } else{ %>
+                <span class="badge bg-dark rounded-pill">✓</span>
+                <% } %>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold">Vendor assigned</div>
+            </div>
+            <% if(status>= 3 ){ %>
+              <span class="badge bg-primary rounded-pill">✓</span>
+              <% } else{ %>
+                <span class="badge bg-dark rounded-pill">✓</span>
+                <% } %>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold">In Process</div>
+            </div>
+            <% if(status>=4 ){ %>
+              <span class="badge bg-primary rounded-pill">✓</span>
+              <% } else{ %>
+                <span class="badge bg-dark rounded-pill">✓</span>
+                <% } %>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold">Order finished</div>
+            </div>
+            <% if(status===5 ){ %>
+              <span class="badge bg-primary rounded-pill">✓</span>
+              <% } else{ %>
+                <span class="badge bg-dark rounded-pill">✓</span>
+                <% } %>
+          </li>
+          <a href="/receipt?order=<%=service%>" class="btn btn-primary btn-profile">Click To Make Payment</a>
+          <!-- Button trigger modal -->
+          <button type="button" class="btn btn-outline-primary btn-profile" data-bs-toggle="modal" data-bs-target="#staticBackdrop"  onclick="CheckStatus()">
+            Mark order as finished
+          </button>
+        </ol>
+
+      </div>
+    </div>
+<script>
+  function CheckStatus(){
+    const status = '<%=status%>';
+    const service = '<%=service%>'; 
+    const date = '<%=date%>';
+    const time = '<%=time%>'; 
+    const price = '<%=price%>'; 
+    if(parseInt(status) < 4 ){
+      alert('Order not yet in processing')
+    }else{
+      fetch(`/updateorderstatus?order=${service}&date=${date}&time=${time}&price=${price}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          }, redirect: "follow"
+        }).then(result => {
+          console.log(result);
+          if (result.ok) {
+            window.location.href = `/order?order=${service}`
+          }
+        }).catch(err => console.log(err))
+    }
+  }
+</script>
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <form method="post" action="/review">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">Give a review</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <input type="email" placeholder="<%=info.user.email%>" value="<%=info.user.email%>" id="email"
+                name="email" />
+              <input type="text" placeholder="<%=info.user.username%>" value="<%=info.user.username%>" id="username"
+                name="username" />
+              <textarea id="review" name="review" required>
+
+            </textarea>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <input type="submit" class="btn btn-primary" value="Understood" />
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+</script>
+
+  </body>
+  <%- include('footer'); -%>

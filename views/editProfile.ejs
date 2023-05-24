@@ -1,0 +1,49 @@
+<%- include('header'); -%>
+
+<body>
+
+  <div class="prof-body">
+    <div class="container prof-container">
+      <div class="row pt-3">
+        <div class="col-md-12">
+          <h1  class="profile-h1"> <i class="fa-solid fa-user"></i> Profile</h1>
+        </div>
+          <div class="col-md-2">
+           
+          </div>
+          <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">
+            <h1>Edit profile </h1>
+          </div>
+          <ul class="list-group list-group-flush">
+            <form action="/editProfile" method="post">
+              <li class="list-group-item"><h5>First Name</h5></li>
+            <input type="text" class="form-control inp" name="fname" placeholder="Full name" value="<%=info.user.firstname%>">
+            <li class="list-group-item"><h5>Last Name</h5></li>
+            <input type="text" class="form-control inp" name="lname" placeholder="Full name" value="<%=info.user.lastname%>">
+            <li class="list-group-item"><h5>Email</h5></li>
+            <input type="text" class="form-control inp" name="email" placeholder="Recipient's username" value="<%=info.user.email%>">
+            <li class="list-group-item"><h5>Username</h5></li>
+            <input type="text" class="form-control inp" name="username" placeholder="Recipient's username" value="<%=info.user.username%>">
+            <li class="list-group-item"><h5>Address</h5></li>
+            <input type="text" class="form-control inp" name="address" placeholder="Recipient's username" value="<%=info.user.address%>">
+            <li class="list-group-item"><h5>City</h5></li>
+            <input type="text" class="form-control inp" name="city" placeholder="Recipient's username" value="<%=info.user.city%>">
+            <div class="buttons">
+            <button class="btn btn-outline-dark" type="submit"><i class="fa-solid fa-right-from-bracket"> </i> Save Profile</button>
+          </div>
+          </form>
+          </ul>
+        </div>
+ 
+  
+  </div>
+  
+</div>
+</div>
+</div>
+
+
+</body>
+<%- include('footer'); -%>
